@@ -1,10 +1,10 @@
 {
-  "name": "doorbot",
+  "name": "tascal",
   "version": "0.0.1",
-  "description": "Simple door opener and user managment system",
+  "description": "A simple time and task management system.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Thann/Doorbot.git"
+    "url": "https://github.com/Thann/tascal.git"
   },
   "bin": "server.js",
   "license": "AGPL-3.0+",
@@ -12,7 +12,7 @@
     "start": "node server --build",
     "test": "mocha",
     "lint": "eslint .",
-    "build": "docker build -t thann/doorbot .",
+    "build": "docker build -t thann/tascal .",
     "dkstart": "docker-compose up -d",
     "dkstop": "docker-compose down",
     "dktest": "docker-compose exec server npm run -s test",
