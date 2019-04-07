@@ -1,4 +1,4 @@
-# Doorbot
+# Tascal
 Door-opening server with user management AKA: "freesee"
 
 Uses a raspberrypi and a solid-state relay to unlock the door.
@@ -11,9 +11,9 @@ All you need is a RasberryPi, a Relay, and a lock ([Amazon](http://a.co/jbvnTH0)
 then plugin the relay.
 It's recommended to use a signal pin above 8, because they will default to Low,
 and wont open the door on reboot.
-[pin-layout](https://github.com/Thann/Doorbot/blob/master/docs/images/pins.png)
+[pin-layout](https://github.com/Thann/Tascal/blob/master/docs/images/pins.png)
 
-![raspberry-pi](https://github.com/Thann/Doorbot/raw/master/docs/images/raspi.jpg)
+![raspberry-pi](https://github.com/Thann/Tascal/raw/master/docs/images/raspi.jpg)
 
 ### Server
 The server can be run on the PI or anywhere else. Docker images exist for ARM and x86.

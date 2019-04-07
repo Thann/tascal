@@ -27,10 +27,10 @@ const getopts = require('node-getopt').create([
 	['',  'insecure',  "Don't validate SSL"],
 	['h', 'help',    ''],
 ]).bindHelp().setHelp(
-	'Doorbot: connects to a server and registers a door to open.\n' +
+	'Tascal: connects to a server and registers a door to open.\n' +
 	'Usage: node door [OPTIONS]\n\n' +
 	'[[OPTIONS]]\n\n' +
-	'Repository: https://github.com/Thann/Doorbot'
+	'Repository: https://github.com/Thann/Tascal'
 );
 const opt = getopts.parseSystem();
 

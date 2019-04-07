@@ -114,14 +114,14 @@ module.exports = Backbone.View.extend({
 		'click .logs .more': 'moreLogs',
 	},
 	initialize: function() {
-		// console.log("UUU", Doorbot.Router.args, Doorbot.User.get('username'))
-		const username = Doorbot.Router.args[0];
-		if (username === Doorbot.User.get('username')) {
-			this.user = Doorbot.User;
+		// console.log("UUU", Tascal.Router.args, Tascal.User.get('username'))
+		const username = Tascal.Router.args[0];
+		if (username === Tascal.User.get('username')) {
+			this.user = Tascal.User;
 		} else {
 			this.user = new UserModel({username: username});
 			this.user.fetch({error: function() {
-				Doorbot.Router.navigate('', {trigger: true});
+				Tascal.Router.navigate('', {trigger: true});
 			}});
 		}
 
@@ -140,13 +140,13 @@ module.exports = Backbone.View.extend({
 		}))();
 		this.moreLogs();
 
-		const me = this.user.id === Doorbot.User.id;
+		const me = this.user.id === Tascal.User.id;
 		this.scope = {
 			me,
 			user: this.user,
 			logs: this.logs,
 			doors: this.doors,
-			self: Doorbot.User,
+			self: Tascal.User,
 			pwType: me ? 'password': 'text',
 			showCurrent: !this.user.get('requires_reset') && me,
 		};
@@ -157,7 +157,7 @@ module.exports = Backbone.View.extend({
 		this.doors.on('sync', _.bind(this.dingleDoors, this));
 	},
 	render: function() {
-		if (Doorbot.Router.args[0] !== this.user.get('username'))
+		if (Tascal.Router.args[0] !== this.user.get('username'))
 			return this.initialize();
 		this.$el.html(this.template);
 		//TODO: rivets throws an error because of user?
@@ -192,7 +192,7 @@ module.exports = Backbone.View.extend({
 		});
 	},
 	logout: function() {
-		Doorbot.User.logout();
+		Tascal.User.logout();
 	},
 	update: function(e) {
 		e.preventDefault();
@@ -253,7 +253,7 @@ module.exports = Backbone.View.extend({
 		if (confirm('Are you sure you want to delete '+
 			this.user.get('username')+'?')) {
 			this.user.destroy();
-			Doorbot.Router.navigate('/admin', {trigger: true});
+			Tascal.Router.navigate('/admin', {trigger: true});
 		}
 	},
 });

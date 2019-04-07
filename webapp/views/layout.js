@@ -15,80 +15,86 @@ module.exports = Backbone.View.extend({
 		<div class="footer hidden"></div>
 	`,
 	loading: true,
-	mainTemplate: '<div data-subview="main"></div>',
-	userTemplate: '<div data-subview="user"></div>',
-	// doorTemplate: '<div data-subview="door"></div>',
-	adminTemplate: '<div data-subview="admin"></div>',
-	loginTemplate: '<div data-subview="login"></div>',
 	events: {
 		'click #Header .toggle-left-sidebar': function() {
 			this.subviews.sidebar.toggle();
 		},
 	},
 	subviewCreators: {
-		main: function() { return new Doorbot.Views.MainPanel(); },
-		user: function() { return new Doorbot.Views.UserPanel(); },
-		// door: function() { return new Doorbot.Views.DoorPanel(); },
-		admin: function() { return new Doorbot.Views.AdminPanel(); },
-		login: function() { return new Doorbot.Views.LoginPanel(); },
-		header: function() { return new Doorbot.Views.Header(); },
-		sidebar: function() { return new Doorbot.Views.Sidebar(); },
+		form: function() { return new Tascal.Views.FormPanel(); },
+		user: function() { return new Tascal.Views.UserPanel(); },
+		admin: function() { return new Tascal.Views.AdminPanel(); },
+		login: function() { return new Tascal.Views.LoginPanel(); },
+		create: function() { return new Tascal.Views.CreatePanel(); },
+		feedbacks: function() { return new Tascal.Views.TascalsPanel(); },
+		header: function() { return new Tascal.Views.Header(); },
+		sidebar: function() { return new Tascal.Views.Sidebar(); },
 	},
 	initialize: function() {
 		const layout = this;
 		this.loading = true;
 		Backbone.Subviews.add( this );
 
-		Doorbot.Router = new (Backbone.Router.extend({
+		Tascal.Router = new (Backbone.Router.extend({
 			routes: {
-				'': 'mainTemplate',
-				'login': 'loginTemplate',
-				'admin': 'adminTemplate',
-				'user/:id': 'userTemplate',
-				// 'door/:id': 'doorTemplate',
-				'*notFound': '',
+				'': 'login',
+				'login': 'login',
+				'admin': 'admin',
+				//TODO: replace "create" with "form" edit mode
+				'create': 'create',
+				'user/:id': 'user',
+				':form/feedback': 'feedbacks',
+				':form/feedback/:fbid': 'feedbacks',
+				'*notFound': 'form',
 			},
+			unauthRoutes: ['form', 'login'],
 			execute: function(cb, args, name) {
 				this.args = args;
-				if (!layout.loading && !Doorbot.User.isAuthed) {
+				if (!layout.loading && !Tascal.User.isAuthed
+						&& !this.lastRouteUnauthed()) {
 					this.navigate('login', {trigger: true});
-				} else if (!Doorbot.Router.name && layout[name]) {
-					layout.render(layout[name]);
+				} else if (!Tascal.Router.name
+						&& layout.subviewCreators[name]) {
+					this.lastRoute = name;
+					layout.render(name);
 				} else {
 					// route not found
 					this.navigate('', {trigger: true});
 				}
 			},
+			lastRouteUnauthed: function() {
+				return this.unauthRoutes.indexOf(this.lastRoute) >= 0;
+			},
 		}))();
 
-		Doorbot.User = new UserModel();
-		Doorbot.User.on('relog', function(loggedIn) {
-			if (loggedIn) {
+		Tascal.User = new UserModel();
+		this.listenTo(Tascal.User, 'relog', function(loggedIn) {
+			if (loggedIn || Tascal.Router.lastRouteUnauthed()) {
 				layout.render();
 			} else {
-				Doorbot.Router.navigate('login', {trigger: false});
-				layout.render(layout.loginTemplate);
+				Tascal.Router.navigate('login', {trigger: false});
+				layout.render('login');
 			}
 		});
 
-		Doorbot.Settings = new (Backbone.Model.extend({
+		Tascal.Settings = new (Backbone.Model.extend({
 			url: '/api/v1/site/settings',
 		}))();
-		Doorbot.Settings.fetch();
+		Tascal.Settings.fetch();
 		// Fetch on user sync?
 
 		this.setTitle();
 		Backbone.history.start();
-		Doorbot.User.init();
+		Tascal.User.init();
 	},
 	setTitle: function() {
-		document.title = 'Doorbot '+(
-			Doorbot.AppConfig.OrgName? ' - '+Doorbot.AppConfig.OrgName : '');
+		document.title = 'Tascal '+(
+			Tascal.AppConfig.OrgName? ' - '+Tascal.AppConfig.OrgName : '');
 	},
 	render: function(tmpl) {
 		this.$el.html(this.template);
 		if (tmpl)
-			this._current_template = tmpl;
+			this._current_template = `<div data-subview="${tmpl}"></div>`;
 		if (!this.loading) {
 			this.$('.main-panel').html(this._current_template);
 		}

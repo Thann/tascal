@@ -1,4 +1,4 @@
-// Doorbot - loads the libraries and exports the global variable "Doorbot".
+// Tascal - loads the libraries and exports the global variable "Tascal".
 
 require('backbone-subviews'); // also makes "Backbone" globally available.
 require('./jquery_extensions');

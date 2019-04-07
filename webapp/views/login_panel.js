@@ -5,16 +5,16 @@ require('styles/login_panel.css');
 module.exports = Backbone.View.extend({
 	id: 'LoginPanel',
 	className: 'container',
-	template: `<h2>Welcome to Doorbot <span rv-if="OrgName"> for { OrgName }</span>!</h2>
+	template: `<h2>Welcome to Tascal <span rv-if="OrgName"> for { OrgName }</span>!</h2>
 		<h4>
-			An <a href="https://github.com/Thann/Doorbot" target="_blank" rel="nofollow">open source</a>
+			An <a href="https://github.com/Thann/Tascal" target="_blank" rel="nofollow">open source</a>
 			door-opening platform that respects your privacy and freedom!
 		</h4>
 		<p>
 			It's a simple user-management platform that uses a raspberry pi for opening doors and logging entry.
 		<br>
 			For help getting started see the
-			<a href="https://github.com/Thann/Doorbot/blob/master/README.md" target="_blank">readme</a>.
+			<a href="https://github.com/Thann/Tascal/blob/master/README.md" target="_blank">readme</a>.
 		</p>
 
 		<br>
@@ -62,7 +62,7 @@ module.exports = Backbone.View.extend({
 		'click .logout': 'logout',
 	},
 	render: function() {
-		this.scope = {user: Doorbot.User};
+		this.scope = {user: Tascal.User};
 		this.$el.html(this.template);
 		Rivets.bind(this.$el, this.scope);
 		return this;
@@ -70,7 +70,7 @@ module.exports = Backbone.View.extend({
 	login: function(evt) {
 		evt.preventDefault();
 		this.scope.error = null;
-		Doorbot.User.login(
+		Tascal.User.login(
 			this.$('.login input[name="username"]')[0].value,
 			this.$('.login input[name="password"]')[0].value,
 			_.bind(function() { // on error
@@ -79,19 +79,19 @@ module.exports = Backbone.View.extend({
 		);
 	},
 	logout: function() {
-		Doorbot.User.logout();
+		Tascal.User.logout();
 	},
 	changePW: function(evt) {
 		evt.preventDefault();
 		this.scope.error = null;
 		// console.log('PP',this.$('.change input[name="password"]')[0].value);
-		Doorbot.User.save({
+		Tascal.User.save({
 			password: this.$('.change input[name="password"]')[0].value,
 		}, {
 			patch: true,
 			success: function(m) {
 				m.set({'password': undefined}, {trigger: false});
-				Doorbot.Router.navigate('', {trigger: true});
+				Tascal.Router.navigate('', {trigger: true});
 			}, error: (m, e) => {
 				this.scope.error = (e.responseJSON.password ||
 					e.responseJSON.error);
