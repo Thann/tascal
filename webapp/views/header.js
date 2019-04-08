@@ -20,8 +20,8 @@ module.exports = Backbone.View.extend({
 			user: Tascal.User,
 			orgName: Tascal.AppConfig.OrgName,
 		};
-		this.$el.html(this.template);
-		Rivets.bind(this.$el, this.scope);
+		this.$el.html(this._template(this));
+		// Rivets.bind(this.$el, this.scope);
 		return this;
 	},
 });

@@ -22,7 +22,7 @@ module.exports = function(env) {
 			new webpack.ProvidePlugin({
 				// These become available to all files.
 				_: 'underscore',
-				Rivets: 'rivets',
+				//Rivets: 'rivets',
 			}),
 			new CompressionPlugin({
 				test: /\.js$/,

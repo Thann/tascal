@@ -21,12 +21,9 @@ module.exports = Backbone.View.extend({
 		},
 	},
 	subviewCreators: {
-		form: function() { return new Tascal.Views.FormPanel(); },
-		user: function() { return new Tascal.Views.UserPanel(); },
-		admin: function() { return new Tascal.Views.AdminPanel(); },
+		main: function() { return new Tascal.Views.MainPanel(); },
+		// full: function() { return new Tascal.Views.FullPanel(); },
 		login: function() { return new Tascal.Views.LoginPanel(); },
-		create: function() { return new Tascal.Views.CreatePanel(); },
-		feedbacks: function() { return new Tascal.Views.TascalsPanel(); },
 		header: function() { return new Tascal.Views.Header(); },
 		sidebar: function() { return new Tascal.Views.Sidebar(); },
 	},
@@ -37,17 +34,12 @@ module.exports = Backbone.View.extend({
 
 		Tascal.Router = new (Backbone.Router.extend({
 			routes: {
-				'': 'login',
+				'': 'main',
+				// 'full': 'full',
 				'login': 'login',
-				'admin': 'admin',
-				//TODO: replace "create" with "form" edit mode
-				'create': 'create',
-				'user/:id': 'user',
-				':form/feedback': 'feedbacks',
-				':form/feedback/:fbid': 'feedbacks',
-				'*notFound': 'form',
+				'*notFound': 'main',
 			},
-			unauthRoutes: ['form', 'login'],
+			unauthRoutes: ['login'],
 			execute: function(cb, args, name) {
 				this.args = args;
 				if (!layout.loading && !Tascal.User.isAuthed

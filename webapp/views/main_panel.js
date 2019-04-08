@@ -24,6 +24,7 @@ module.exports = Backbone.View.extend({
 		'click .open-door': 'openDoor',
 	},
 	initialize: function() {
+		this._template = _.template(this.template);
 		this.hasAvail = true;
 		this.doors = new (Backbone.Collection.extend({
 			url: '/api/v1/doors',
@@ -40,8 +41,8 @@ module.exports = Backbone.View.extend({
 			doors: this.doors,
 			hasAvail: this.hasAvail,
 		};
-		this.$el.html(this.template);
-		Rivets.bind(this.$el, this.scope);
+		this.$el.html(this.template(this));
+		// Rivets.bind(this.$el, this.scope);
 		return this;
 	},
 	openDoor: function(e) {
