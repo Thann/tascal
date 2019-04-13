@@ -23,6 +23,7 @@ module.exports = Backbone.View.extend({
 	subviewCreators: {
 		main: function() { return new Tascal.Views.MainPanel(); },
 		// full: function() { return new Tascal.Views.FullPanel(); },
+		user: function() { return new Tascal.Views.UserPanel(); },
 		login: function() { return new Tascal.Views.LoginPanel(); },
 		header: function() { return new Tascal.Views.Header(); },
 		sidebar: function() { return new Tascal.Views.Sidebar(); },
@@ -37,6 +38,7 @@ module.exports = Backbone.View.extend({
 				'': 'main',
 				// 'full': 'full',
 				'login': 'login',
+				'user/:id': 'user',
 				'*notFound': 'main',
 			},
 			unauthRoutes: ['login'],

@@ -1,62 +1,50 @@
 // MainPanel
 
+import { Calendar } from '@fullcalendar/core';
+import interactionPlugin from '@fullcalendar/interaction';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import '@fullcalendar/core/main.css';
+import '@fullcalendar/daygrid/main.css';
+import '@fullcalendar/timegrid/main.css';
+import '@fullcalendar/list/main.css';
 require('styles/main_panel.css');
 
 module.exports = Backbone.View.extend({
 	id: 'MainPanel',
 	className: 'container flex',
-	template: `
-		<div rv-each-door="doors" class="row">
-			<div class="col-md-12">
-				<button
-					rv-show="door:available"
-					rv-data-id="door:id"
-					class="btn btn-default open-door">
-						{ door:name }
-				</button>
-			</div>
-		</div>
-		<div rv-hide="hasAvail">
-			No doors available
-		</div>
-	`,
 	events: {
 		'click .open-door': 'openDoor',
 	},
 	initialize: function() {
-		this._template = _.template(this.template);
-		this.hasAvail = true;
-		this.doors = new (Backbone.Collection.extend({
-			url: '/api/v1/doors',
-		}))();
-		this.doors.on('sync', _.bind(function() {
-			//TODO: render should not be nessicary
-			this.hasAvail = Boolean(this.doors.findWhere({available: true})),
-			this.render();
-		}, this));
-		this.doors.fetch();
+		this.calendar = new Calendar(this.el, {
+			// defaultView: 'dayGridMonth',
+			plugins: [
+				interactionPlugin,
+				dayGridPlugin,
+				timeGridPlugin,
+				listPlugin,
+			],
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+			},
+			defaultDate: '2018-01-12',
+			navLinks: true, // can click day/week names to navigate views
+			editable: true,
+			eventLimit: true, // allow "more" link when too many events
+			events: [
+				{
+					title: 'All Day Event',
+					start: '2018-01-01',
+				},
+			],
+		});
 	},
 	render: function() {
-		this.scope = {
-			doors: this.doors,
-			hasAvail: this.hasAvail,
-		};
-		this.$el.html(this.template(this));
-		// Rivets.bind(this.$el, this.scope);
+		this.calendar.render();
 		return this;
-	},
-	openDoor: function(e) {
-		const target = this.$(e.currentTarget);
-		const door = this.doors.find({id: target.data('id')});
-		door.sync(null, this, {
-			url: door.url()+'/open',
-			method: 'POST',
-			success: function() {
-				target.addClass('opened');
-				setTimeout(function() {
-					target.removeClass('opened');
-				}, 1500);
-			},
-		});
 	},
 });
