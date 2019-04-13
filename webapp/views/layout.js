@@ -21,10 +21,10 @@ module.exports = Backbone.View.extend({
 		},
 	},
 	subviewCreators: {
-		main: function() { return new Tascal.Views.MainPanel(); },
+		cal: function() { return new Tascal.Views.CalendarPanel(); },
 		// full: function() { return new Tascal.Views.FullPanel(); },
-		user: function() { return new Tascal.Views.UserPanel(); },
-		login: function() { return new Tascal.Views.LoginPanel(); },
+		// user: function() { return new Tascal.Views.UserPanel(); },
+		// login: function() { return new Tascal.Views.LoginPanel(); },
 		header: function() { return new Tascal.Views.Header(); },
 		sidebar: function() { return new Tascal.Views.Sidebar(); },
 	},
@@ -35,13 +35,13 @@ module.exports = Backbone.View.extend({
 
 		Tascal.Router = new (Backbone.Router.extend({
 			routes: {
-				'': 'main',
+				'': 'cal',
 				// 'full': 'full',
-				'login': 'login',
-				'user/:id': 'user',
-				'*notFound': 'main',
+				// 'login': 'login',
+				// 'user/:id': 'user',
+				'*notFound': 'cal',
 			},
-			unauthRoutes: ['login'],
+			unauthRoutes: ['login', ''],
 			execute: function(cb, args, name) {
 				this.args = args;
 				if (!layout.loading && !Tascal.User.isAuthed

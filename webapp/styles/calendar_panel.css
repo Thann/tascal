@@ -1,0 +1,12 @@
+#CalendarPanel {
+	margin: auto;
+	margin-top: 10px;
+	max-width: 1024px;
+
+	/* TASKS PLUGIN */
+	.fc-tasks {
+		min-height: 500 px;
+		border: 1px solid white;
+	}
+
+}
