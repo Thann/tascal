@@ -28,15 +28,15 @@ build_x86:
       - public
     expire_in: 1 week
 
-build_arm7:
-  stage: build
-  #when: manual
-  tags:
-    - docker
-  script:
-    - docker build -t "$CI_REGISTRY_IMAGE$BRANCH:arm7" -f Dockerfile-qemu-arm7 .
-    - docker run --rm "$CI_REGISTRY_IMAGE$BRANCH:arm7" ./node_modules/.bin/mocha
-    - docker push "$CI_REGISTRY_IMAGE$BRANCH:arm7"
+# build_arm7:
+#   stage: build
+#   #when: manual
+#   tags:
+#     - docker
+#   script:
+#     - docker build -t "$CI_REGISTRY_IMAGE$BRANCH:arm7" -f Dockerfile-qemu-arm7 .
+#     - docker run --rm "$CI_REGISTRY_IMAGE$BRANCH:arm7" ./node_modules/.bin/mocha
+#     - docker push "$CI_REGISTRY_IMAGE$BRANCH:arm7"
 
 pages:
   stage: post
