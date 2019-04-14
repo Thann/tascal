@@ -24,6 +24,7 @@
     "@fullcalendar/daygrid": "^4.0.1",
     "@fullcalendar/interaction": "^4.0.2",
     "@fullcalendar/list": "^4.0.1",
+    "@fullcalendar/rrule": "^4.0.2",
     "@fullcalendar/timegrid": "^4.0.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",

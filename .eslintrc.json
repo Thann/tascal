@@ -54,6 +54,7 @@
     "linebreak-style": ["error", "unix"],
     "max-len": ["error", {
       "code": 80,
+      "ignoreComments": true,
       "ignorePattern": "function \\w+\\(",
       "ignoreUrls": true,
       "ignoreStrings": true,
